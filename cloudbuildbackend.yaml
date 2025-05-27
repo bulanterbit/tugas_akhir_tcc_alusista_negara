@@ -29,9 +29,6 @@ steps:
       - "managed"
       - "--allow-unauthenticated" # Sesuaikan jika perlu
       - "--set-env-vars"
-      # - "^##^NODE_ENV=production##DB_USER=[YOUR_DB_USER]##DB_PASSWORD=[YOUR_DB_PASSWORD]##DB_NAME=[YOUR_DB_NAME]##CLOUD_SQL_CONNECTION_NAME=[YOUR_CLOUD_SQL_CONNECTION_NAME]"
-      # - "--add-cloudsql-instances"
-      # - "[YOUR_CLOUD_SQL_CONNECTION_NAME]"
 images:
   - "gcr.io/$PROJECT_ID/alusista-backend:$COMMIT_SHA"
 
