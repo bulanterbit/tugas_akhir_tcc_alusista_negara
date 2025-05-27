@@ -11,7 +11,7 @@ COPY backend/package*.json ./
 RUN npm install
 
 # Salin sisa kode aplikasi backend
-COPY backend/ .
+COPY . .
 
 # Ekspos port yang digunakan aplikasi Anda (misalnya, 8080 atau 3000 dari app.js)
 EXPOSE 8080
