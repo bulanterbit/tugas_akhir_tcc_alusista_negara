@@ -1,5 +1,6 @@
 // frontend/js/utils.js
-const API_BASE_URL = "http://localhost:5000/api"; // Your backend API URL
+const API_BASE_URL =
+  "https://alusista-backend-service-53705063113.us-central1.run.app/api"; // Your backend API URL
 
 function getAuthToken() {
   return localStorage.getItem("authToken");
@@ -49,7 +50,6 @@ async function apiRequest(
   // Re-assign headers to config in case they were modified
   config.headers = headers;
 
-
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
     const data = await response.json();
@@ -59,13 +59,25 @@ async function apiRequest(
         `API Error (${response.status}) on ${method} ${endpoint}:`,
         data.message || response.statusText
       );
-      displayMessage(data.message || `Error: ${response.statusText}`, "error", endpoint.includes('pesawat') ? 'pesawat-message-container' : 'global-message');
+      displayMessage(
+        data.message || `Error: ${response.statusText}`,
+        "error",
+        endpoint.includes("pesawat")
+          ? "pesawat-message-container"
+          : "global-message"
+      );
       return Promise.reject(data);
     }
     return data;
   } catch (error) {
     console.error("Network or other error:", error);
-    displayMessage("Network error or server is unreachable.", "error", endpoint.includes('pesawat') ? 'pesawat-message-container' : 'global-message');
+    displayMessage(
+      "Network error or server is unreachable.",
+      "error",
+      endpoint.includes("pesawat")
+        ? "pesawat-message-container"
+        : "global-message"
+    );
     return Promise.reject(error);
   }
 }
@@ -79,7 +91,10 @@ function displayMessage(
   let container = document.getElementById(containerId);
 
   // If specific container not found, try a global one for auth pages
-  if (!container && (containerId === 'message-container' || containerId.includes('auth'))) {
+  if (
+    !container &&
+    (containerId === "message-container" || containerId.includes("auth"))
+  ) {
     container = document.getElementById("message-container"); // For login/register page
   }
   // If still not found, try the global message container in the navbar
@@ -87,26 +102,30 @@ function displayMessage(
     container = document.getElementById("global-message");
   }
 
-
   if (container) {
     const messageTypeClass =
       type === "error" ? "text-red-500" : "text-green-500";
     container.innerHTML = `<p class="${messageTypeClass} p-2">${message}</p>`; // Added padding for visibility
     setTimeout(() => {
-      if (container.innerHTML.includes(message)) { // Clear only if it's the same message
+      if (container.innerHTML.includes(message)) {
+        // Clear only if it's the same message
         container.innerHTML = "";
       }
     }, 5000);
   } else {
-      console.warn(`Message container with ID '${containerId}' not found. Message: ${message}`);
+    console.warn(
+      `Message container with ID '${containerId}' not found. Message: ${message}`
+    );
   }
 }
-
 
 function checkAuth(redirectIfUnauthenticated = true) {
   const token = getAuthToken();
   if (!token && redirectIfUnauthenticated) {
-    if (!window.location.pathname.endsWith("index.html") && !window.location.pathname.endsWith("/")) {
+    if (
+      !window.location.pathname.endsWith("index.html") &&
+      !window.location.pathname.endsWith("/")
+    ) {
       window.location.href = "index.html";
     }
     return false;
@@ -138,11 +157,17 @@ function logoutUser() {
     .finally(() => {
       removeAuthToken();
       // Ensure redirection to index.html or root
-      if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
-          window.location.href = "index.html";
-      } else if (window.location.pathname.endsWith('index.html') && window.location.search.includes('auth_error')) {
-          // If already on index.html due to an auth error, maybe refresh to clear state or remove query param
-          window.location.href = "index.html";
+      if (
+        !window.location.pathname.endsWith("index.html") &&
+        window.location.pathname !== "/"
+      ) {
+        window.location.href = "index.html";
+      } else if (
+        window.location.pathname.endsWith("index.html") &&
+        window.location.search.includes("auth_error")
+      ) {
+        // If already on index.html due to an auth error, maybe refresh to clear state or remove query param
+        window.location.href = "index.html";
       }
     });
 }
