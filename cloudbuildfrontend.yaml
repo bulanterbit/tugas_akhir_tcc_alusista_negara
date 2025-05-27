@@ -1,0 +1,7 @@
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy", "app.yaml"]
+    dir: "frontend"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
